@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<title>💖 Valentine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:'Poppins',sans-serif;
+
+  /* 🌸 background image + soft overlay */
+  background:
+    linear-gradient(rgba(255,77,109,.35), rgba(255,158,188,.35)),
+    url("1.png");   /* ← энд зургаа */
+
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+
+  display:flex;
+  justify-content:center;
+
+  /* ⬇ card-г доошлуулна */
+  align-items:flex-start;
+  padding-top:60px;   /* ← энэ тоог ихэсгэвэл доошилно */
+}
+
+
+.card{
+  background:#fff;
+  padding:40px 30px;
+  border-radius:30px; /* 🎀 rounded */
+  width:90%;
+  max-width:380px;
+  text-align:center;
+  box-shadow:0 25px 50px rgba(255,77,109,.35);
+}
+
+/* 💖 pulse heart */
+.heart{
+  font-size:60px;
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.15)}
+}
+
+h1{
+  margin-top:25px;   /* ⬇ доошлуулна */
+  margin-bottom:10px;
+  color:#ff3b6f;
+}
+
+
+.buttons{
+  margin-top:30px;
+  display:flex;
+  justify-content:center;
+  gap:15px;
+}
+
+button{
+  font-size:18px;
+  padding:14px 30px;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  transition:.3s ease;
+}
+
+/* ✅ Yes */
+#yes{
+  background:linear-gradient(135deg,#ff3b6f,#ff7aa2);
+  color:#fff;
+  box-shadow:0 10px 20px rgba(255,59,111,.4);
+}
+
+/* ❌ No */
+#no{
+  background:#dee2e6;
+  color:#555;
+}
+
+#question{
+  margin-top:20px;
+  font-weight:600;
+  color:#ff3b6f;
+  min-height:24px;
+}
+
+/* ===== Animations ===== */
+
+/* ❌ No shake */
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  50%{transform:translateX(6px)}
+  75%{transform:translateX(-6px)}
+  100%{transform:translateX(0)}
+}
+.shake{ animation:shake .35s; }
+
+/* ❌ disappear */
+@keyframes fadeOut{
+  to{ opacity:0; transform:scale(.2); }
+}
+.disappear{ animation:fadeOut .4s forwards; }
+
+/* ✅ Yes bounce */
+@keyframes bounce{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.15)}
+  100%{transform:scale(1)}
+}
+.bounce{ animation:bounce .3s; }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="heart">💖</div>
+  <h1>Чи миний Valentine болох уу?</h1>
+
+  <div class="buttons">
+    <button id="yes">Тийм💕</button>
+    <button id="no">Үгүй🙈</button>
+  </div>
+
+  <div id="question"></div>
+</div>
+
+<script>
+const yesBtn = document.getElementById("yes");
+const noBtn  = document.getElementById("no");
+const q      = document.getElementById("question");
+
+let scale = 1;
+let count = 0;
+
+const texts = [
+  "Итгэлтэй байна уу? 🤔",
+  "Дахиад бодооч 🥺",
+  "Үнэхээр үү? 😅",
+  "Харамсаваа😏",
+  "😌",
+  "-_-"
+];
+
+// ✅ YES → bounce + өөр page
+yesBtn.onclick = () => {
+  yesBtn.classList.add("bounce");
+  setTimeout(()=>{
+    window.location.href = "love.html";
+  },200);
+};
+
+// ❌ NO → shake, Yes томорно, 6 дээр алга
+noBtn.onclick = () => {
+  count++;
+
+  // shake
+  noBtn.classList.add("shake");
+  setTimeout(()=>noBtn.classList.remove("shake"),300);
+
+  // pressure effect
+  scale += 0.35;
+  yesBtn.style.transform = `scale(${scale})`;
+
+  q.textContent = texts[Math.min(count-1, texts.length-1)];
+
+  if(count >= 6){
+    noBtn.classList.add("disappear");
+    q.textContent = "";
+  }
+};
+</script>
+
+</body>
+</html>
